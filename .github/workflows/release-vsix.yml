@@ -34,21 +34,25 @@ jobs:
             '.repository = {"type":"git","url":$u,"directory":"vscode-gatling-cursor-pack"}' \
             package.json > package.json.tmp && mv package.json.tmp package.json
 
-      # Cursor/VS Code show extension version from package.json "version" (semver, no "v" prefix).
-      - name: Set extension version from git tag
+      # npm ci requires package.json and package-lock.json root versions to match committed files first.
+      - name: Install dependencies
+        working-directory: vscode-gatling-cursor-pack
+        run: npm ci
+
+      # Cursor reads extension version from package.json; align both manifests with the tag (not committed).
+      - name: Set extension version from git tag (package.json + package-lock.json)
         working-directory: vscode-gatling-cursor-pack
         env:
           TAG: ${{ github.ref_name }}
         run: |
           VERSION="${TAG#v}"
-          echo "package.json version <- tag $TAG => $VERSION"
+          echo "Version from tag $TAG => $VERSION (ephemeral on runner only)"
           jq --arg v "$VERSION" '.version = $v' package.json > package.json.tmp && mv package.json.tmp package.json
+          jq --arg v "$VERSION" '.version = $v | .packages[""].version = $v' package-lock.json > package-lock.json.tmp && mv package-lock.json.tmp package-lock.json
 
-      - name: Install dependencies and package VSIX
+      - name: Package VSIX
         working-directory: vscode-gatling-cursor-pack
-        run: |
-          npm ci
-          npm run package
+        run: npm run package
 
       - name: Add VSIX copy named after the git tag
         env:

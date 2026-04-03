@@ -29,16 +29,16 @@ npm install   # or npm ci if you rely on package-lock.json only
 npm run package
 ```
 
-This produces `gatling-cursor-pack-<version>.vsix` here (version matches `package.json`, e.g. `0.1.0`). Whenever root `.cursor/`, `AGENTS.md`, or `mcp.json.example` change, run `bundle-vsix-pack.sh` again before packaging.
+This produces `gatling-cursor-pack-<version>.vsix` here (version matches committed `package.json`). Whenever root `.cursor/`, `AGENTS.md`, or `mcp.json.example` change, run `bundle-vsix-pack.sh` again before packaging.
 
-Bump `"version"` in `package.json` before publishing a new VSIX.
+**Official releases:** do not bump `package.json` in Git for each release — push a **`v*`** tag; [`.github/workflows/release-vsix.yml`](../.github/workflows/release-vsix.yml) applies the semver from the tag on the runner (including `package-lock.json` for `npm ci` compatibility) and builds the VSIX.
 
 ## Git vs GitHub Actions
 
 - **Commit to Git**: extension source only (`extension.js`, `package.json`, `package-lock.json`, `README.md`, `LICENSE`).
 - **Ignored locally (not pushed)**: `pack/`, `node_modules/`, `*.vsix` — see monorepo root `.gitignore`. Run `./scripts/bundle-vsix-pack.sh` and `npm run package` locally when you need a VSIX on disk; CI produces the same without polluting the remote repo.
 - **GitHub Actions — artifact**: `.github/workflows/build-vsix.yml` uploads the **`gatling-cursor-pack-vsix`** zip per run (Actions → run → Artifacts).
-- **GitHub Actions — Release**: push tag `v*` (e.g. `v0.1.0`) to run `.github/workflows/release-vsix.yml`; it creates a **GitHub Release** with the `.vsix` attached (best for sharing without cloning).
+- **GitHub Actions — Release**: push tag `v*` to run `.github/workflows/release-vsix.yml`; it updates version from the tag on the runner, builds the `.vsix`, and creates a **GitHub Release** (best for sharing without cloning).
 
 If `pack/` was tracked before: `git rm -r --cached vscode-gatling-cursor-pack/pack` then commit.
 

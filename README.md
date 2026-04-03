@@ -20,7 +20,7 @@ The extension in [`vscode-gatling-cursor-pack/`](vscode-gatling-cursor-pack/) pr
 2. Install it in **Cursor** (the Extensions sidebar is often marketplace-only; use one of these instead):
    - **Command palette** (`Cmd+Shift+P` / `Ctrl+Shift+P`) → type **`Extensions: Install from VSIX...`** → choose the `.vsix` file; *or*
    - **Drag and drop** the `.vsix` file onto the **Extensions** side bar; *or*
-   - **Terminal**: `cursor --install-extension /absolute/path/to/gatling-cursor-pack-0.1.0.vsix` (adjust path and filename; on some setups the binary is `cursor` from the CLI you installed with Cursor).
+   - **Terminal**: `cursor --install-extension /absolute/path/to/gatling-cursor-pack-v0.1.1.vsix` (use the filename from the Release you downloaded; on some setups the binary is `cursor` from the CLI you installed with Cursor).
 3. Open your **project folder** (**File → Open Folder**).
 4. Command palette → **Gatling Cursor Pack: Install into workspace**.
 5. Configure MCP using `AGENTS.md` and `mcp.json.example` in that project (and `GATLING_ENTERPRISE_API_TOKEN`).
@@ -32,10 +32,10 @@ If **`Extensions: Install from VSIX`** does not appear, update Cursor or see [Cu
 | Source | What it is |
 |--------|------------|
 | **Rolling “latest” VSIX** | Pre-release **`rolling-vsix`** (“Latest VSIX (rolling)”): updated when you **push a tag `v*`** (same workflow as below, same `.vsix` as that tag, file name `gatling-cursor-pack-<tag>.vsix`) *and* when [`.github/workflows/build-vsix.yml`](.github/workflows/build-vsix.yml) succeeds on **`main`/`master`** (then reflects the last **branch** build). Open **Releases** → that entry for a stable download without unzipping. |
-| **Versioned GitHub Release** | Pushing a tag `v*` (e.g. `v0.1.0`) runs [`.github/workflows/release-vsix.yml`](.github/workflows/release-vsix.yml): creates the **Release for that tag** with **`gatling-cursor-pack-v0.1.0.vsix`** (name includes the tag) *and* refreshes **`rolling-vsix`** with the same file. |
+| **Versioned GitHub Release** | Pushing a tag `v*` (e.g. `v0.1.1`) runs [`.github/workflows/release-vsix.yml`](.github/workflows/release-vsix.yml): creates the **Release for that tag** with **`gatling-cursor-pack-<tag>.vsix`** *and* refreshes **`rolling-vsix`** with the same file. |
 | **Workflow artifact** | On each run, **Actions** → open that run → **Summary** → **Artifacts** → **`gatling-cursor-pack-vsix`** (zip; unzip for the `.vsix`). Handy if you need the file for a **specific** run; retention is limited (e.g. 90 days). |
 
-**Maintainers — publish a Release:** push a tag `v*` (e.g. `git tag v0.1.0 && git push origin v0.1.0`). The [release workflow](.github/workflows/release-vsix.yml) sets `vscode-gatling-cursor-pack/package.json` **`version`** from the tag (`v0.1.0` → `0.1.0`) before packaging, so **Cursor shows that same version** for the installed extension. You can still bump `version` in the repo for local `npm run package`; CI overrides it on tag builds.
+**Maintainers — publish a Release:** push a tag `v*` only (e.g. `git tag v0.1.1 && git push origin v0.1.1`). **Do not bump** `vscode-gatling-cursor-pack/package.json` / `package-lock.json` in Git for that: the [release workflow](.github/workflows/release-vsix.yml) runs `npm ci` with the committed files, then sets **`version`** in both manifests from the tag on the runner (`v0.1.1` → `0.1.1`), then builds the VSIX — **Cursor shows that version**. Local `npm run package` still uses whatever version is committed in the repo.
 
 **Local build (optional):** your machine can keep `vscode-gatling-cursor-pack/pack/`, `node_modules/`, and `*.vsix`; those paths are in [`.gitignore`](.gitignore) so they are not pushed.
 
