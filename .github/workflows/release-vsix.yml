@@ -1,5 +1,6 @@
-# Builds the VSIX and attaches it to a GitHub Release when you push a version tag (e.g. v0.1.0).
-# Path filters do not apply to tag pushes, so releases always build.
+# On tag v*:
+# 1) GitHub Release for that tag with a VSIX named gatling-cursor-pack-<tag>.vsix
+# 2) Rolling pre-release "rolling-vsix" updated with the same VSIX (always "head" / latest build from tags)
 
 name: Release VSIX (GitHub Release)
 
@@ -33,14 +34,54 @@ jobs:
             '.repository = {"type":"git","url":$u,"directory":"vscode-gatling-cursor-pack"}' \
             package.json > package.json.tmp && mv package.json.tmp package.json
 
+      # Cursor/VS Code show extension version from package.json "version" (semver, no "v" prefix).
+      - name: Set extension version from git tag
+        working-directory: vscode-gatling-cursor-pack
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          VERSION="${TAG#v}"
+          echo "package.json version <- tag $TAG => $VERSION"
+          jq --arg v "$VERSION" '.version = $v' package.json > package.json.tmp && mv package.json.tmp package.json
+
       - name: Install dependencies and package VSIX
         working-directory: vscode-gatling-cursor-pack
         run: |
           npm ci
           npm run package
 
-      - name: Publish GitHub Release with VSIX
+      - name: Add VSIX copy named after the git tag
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          files=(vscode-gatling-cursor-pack/*.vsix)
+          if [[ ${#files[@]} -ne 1 ]]; then
+            echo "error: expected exactly one .vsix, got: ${files[*]}"
+            exit 1
+          fi
+          cp "${files[0]}" "vscode-gatling-cursor-pack/gatling-cursor-pack-${TAG}.vsix"
+          ls -la vscode-gatling-cursor-pack/*.vsix
+
+      - name: Publish GitHub Release for this tag (versioned VSIX)
         uses: softprops/action-gh-release@v2
         with:
-          files: vscode-gatling-cursor-pack/*.vsix
+          files: vscode-gatling-cursor-pack/gatling-cursor-pack-${{ github.ref_name }}.vsix
           generate_release_notes: true
+
+      - name: Update rolling "latest" pre-release (same VSIX)
+        uses: ncipollo/release-action@v1
+        with:
+          tag: rolling-vsix
+          name: Latest VSIX (rolling)
+          body: |
+            **Rolling build** — same `.vsix` as the latest tag **[`${{ github.ref_name }}`](https://github.com/${{ github.repository }}/releases/tag/${{ github.ref_name }})** (commit [`${{ github.sha }}`](https://github.com/${{ github.repository }}/commit/${{ github.sha }})).
+
+            Download **`gatling-cursor-pack-${{ github.ref_name }}.vsix`** below. This pre-release is **replaced** each time you push a `v*` tag.
+          artifacts: vscode-gatling-cursor-pack/gatling-cursor-pack-${{ github.ref_name }}.vsix
+          allowUpdates: true
+          replacesArtifacts: true
+          prerelease: true
+          makeLatest: false
+          token: ${{ secrets.GITHUB_TOKEN }}

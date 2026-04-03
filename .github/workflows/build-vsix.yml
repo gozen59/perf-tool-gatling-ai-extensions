@@ -12,8 +12,9 @@ on:
       - "scripts/bundle-vsix-pack.sh"
       - ".github/workflows/build-vsix.yml"
 
+# write: rolling release job updates tag + assets for “latest” VSIX download
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   vsix:
@@ -49,3 +50,36 @@ jobs:
           name: gatling-cursor-pack-vsix
           path: vscode-gatling-cursor-pack/*.vsix
           if-no-files-found: error
+          # Keep the file on the latest run easy to find (org max may still apply)
+          retention-days: 90
+
+  # Durable “latest” download: GitHub Releases (pre-release), updated in place each run.
+  # Workflow Artifacts remain on the run Summary; this job mirrors the VSIX onto one rolling Release.
+  publish-rolling-release:
+    name: Publish VSIX to rolling Release (latest)
+    needs: vsix
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download VSIX from this workflow run
+        uses: actions/download-artifact@v4
+        with:
+          name: gatling-cursor-pack-vsix
+          path: vsix-out
+
+      - name: Attach VSIX to rolling pre-release (always “latest” build from main/master)
+        uses: ncipollo/release-action@v1
+        with:
+          tag: rolling-vsix
+          name: Latest VSIX build (main)
+          body: |
+            **Automated build** — commit [`${{ github.sha }}`](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) on `${{ github.ref_name }}`.
+
+            Download the `.vsix` below. This pre-release is **replaced** on each successful workflow run (same tag).
+
+            For **versioned** installs, use a tag `v*` (see `release-vsix.yml`) or the workflow **Artifacts** on the run you care about.
+          artifacts: vsix-out/*.vsix
+          allowUpdates: true
+          replacesArtifacts: true
+          prerelease: true
+          makeLatest: false
+          token: ${{ secrets.GITHUB_TOKEN }}
