@@ -12,16 +12,38 @@ This repository is a **fork** of Gatling’s official **[gatling-ai-extensions](
 
 The extension in [`vscode-gatling-cursor-pack/`](vscode-gatling-cursor-pack/) produces a `.vsix` for Cursor or VS Code. It copies `.cursor/`, `mcp.json.example`, and `AGENTS.md` into the open workspace via a command palette action.
 
-**Official build (recommended):** GitHub Actions workflow [`.github/workflows/build-vsix.yml`](.github/workflows/build-vsix.yml) runs on push (when relevant paths change) and on **workflow_dispatch**. Download the **`gatling-cursor-pack-vsix`** artifact from the run’s **Summary** page.
+**You do not need to clone the repository** to install the extension: download only the `.vsix` (see below), then install it in Cursor.
 
-**Local build (optional):** your machine keeps `vscode-gatling-cursor-pack/pack/`, `node_modules/`, and `*.vsix` for development; those paths are listed in [`.gitignore`](.gitignore) so they are **not pushed** to GitHub.
+### Install the VSIX in Cursor (no repo clone)
+
+1. Download the `.vsix` file using **either** option below.
+2. Install it in **Cursor** (the Extensions sidebar is often marketplace-only; use one of these instead):
+   - **Command palette** (`Cmd+Shift+P` / `Ctrl+Shift+P`) → type **`Extensions: Install from VSIX...`** → choose the `.vsix` file; *or*
+   - **Drag and drop** the `.vsix` file onto the **Extensions** side bar; *or*
+   - **Terminal**: `cursor --install-extension /absolute/path/to/gatling-cursor-pack-0.1.0.vsix` (adjust path and filename; on some setups the binary is `cursor` from the CLI you installed with Cursor).
+3. Open your **project folder** (**File → Open Folder**).
+4. Command palette → **Gatling Cursor Pack: Install into workspace**.
+5. Configure MCP using `AGENTS.md` and `mcp.json.example` in that project (and `GATLING_ENTERPRISE_API_TOKEN`).
+
+If **`Extensions: Install from VSIX`** does not appear, update Cursor or see [Cursor forum — VSIX install](https://forum.cursor.com/t/how-to-install-vsix-format-extension/1667/).
+
+### Where to get the `.vsix`
+
+| Source | What it is |
+|--------|------------|
+| **GitHub Release** (recommended for sharing) | Pushing a tag `v*` (e.g. `v0.1.0`) runs [`.github/workflows/release-vsix.yml`](.github/workflows/release-vsix.yml), which **creates a [Release](https://docs.github.com/en/repositories/releasing-projects-on-github/about-releases)** and attaches the built `.vsix`. Colleagues open the repo’s **Releases** page and download the file — nothing else from the repo is required. |
+| **Workflow artifact** | [`.github/workflows/build-vsix.yml`](.github/workflows/build-vsix.yml) runs on pushes (matching paths) and **workflow_dispatch**. Each successful run exposes a zip **`gatling-cursor-pack-vsix`** under **Actions** → select the run → **Summary** → **Artifacts**. Unzip it to get the `.vsix`. Artifacts are **not** stored inside Git history; they are separate downloads tied to the workflow run. |
+
+**Maintainers — publish a Release:** bump `version` in [`vscode-gatling-cursor-pack/package.json`](vscode-gatling-cursor-pack/package.json) if needed, commit, then e.g. `git tag v0.1.0 && git push origin v0.1.0` to trigger the release workflow and attach the VSIX to that tag’s Release page.
+
+**Local build (optional):** your machine can keep `vscode-gatling-cursor-pack/pack/`, `node_modules/`, and `*.vsix`; those paths are in [`.gitignore`](.gitignore) so they are not pushed.
 
 ```bash
 ./scripts/bundle-vsix-pack.sh
 cd vscode-gatling-cursor-pack && npm install && npm run package
 ```
 
-Install the `.vsix` via **Extensions → Install from VSIX…**, then run **Gatling Cursor Pack: Install into workspace**. See [`vscode-gatling-cursor-pack/README.md`](vscode-gatling-cursor-pack/README.md) for details.
+See [`vscode-gatling-cursor-pack/README.md`](vscode-gatling-cursor-pack/README.md) for maintainer details.
 
 > If `pack/` was ever committed before, stop tracking it once: `git rm -r --cached vscode-gatling-cursor-pack/pack` then commit.
 
@@ -55,7 +77,7 @@ The rule [`.cursor/rules/gatling-enterprise.mdc`](.cursor/rules/gatling-enterpri
 - `./mcp-servers/gatling` — MCP server source published to npm
 - `./scripts/` — sync, regeneration, and VSIX bundle (`bundle-vsix-pack.sh`, etc.)
 - `./vscode-gatling-cursor-pack/` — VSIX extension **source** only (`extension.js`, `package.json`, …). Local `pack/`, `node_modules/`, and `*.vsix` are [gitignored](.gitignore); CI builds the VSIX via [`.github/workflows/build-vsix.yml`](.github/workflows/build-vsix.yml).
-- `./.github/workflows/` — includes `build-vsix.yml` (artifact `gatling-cursor-pack-vsix`)
+- `./.github/workflows/` — `build-vsix.yml` (artifact `gatling-cursor-pack-vsix` on each run); `release-vsix.yml` (GitHub **Release** + attached `.vsix` on tag `v*`)
 
 ## Requirements
 

@@ -4,6 +4,10 @@
   "description": "Cursor skills and rules for Gatling Enterprise (copy into workspace + MCP docs).",
   "version": "0.1.0",
   "publisher": "local",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gatling/gatling-ai-extensions.git"
+  },
   "license": "Apache-2.0",
   "engines": {
     "vscode": "^1.80.0"
@@ -20,7 +24,7 @@
     ]
   },
   "scripts": {
-    "package": "vsce package --no-dependencies --allow-missing-repository"
+    "package": "vsce package --no-dependencies"
   },
   "devDependencies": {
     "@vscode/vsce": "^3.3.2"

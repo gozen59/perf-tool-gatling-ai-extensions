@@ -1,22 +1,18 @@
-name: Build VSIX (Gatling Cursor Pack)
+# Builds the VSIX and attaches it to a GitHub Release when you push a version tag (e.g. v0.1.0).
+# Path filters do not apply to tag pushes, so releases always build.
+
+name: Release VSIX (GitHub Release)
 
 on:
-  workflow_dispatch:
   push:
-    branches: [main, master]
-    paths:
-      - ".cursor/**"
-      - "vscode-gatling-cursor-pack/**"
-      - "mcp.json.example"
-      - "AGENTS.md"
-      - "scripts/bundle-vsix-pack.sh"
-      - ".github/workflows/build-vsix.yml"
+    tags:
+      - "v*"
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
-  vsix:
+  release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -30,7 +26,6 @@ jobs:
       - name: Bundle pack from repo root
         run: ./scripts/bundle-vsix-pack.sh
 
-      # vsce requires a resolvable repository; point at this fork (monorepo subfolder).
       - name: Set extension repository URL for vsce
         working-directory: vscode-gatling-cursor-pack
         run: |
@@ -44,8 +39,8 @@ jobs:
           npm ci
           npm run package
 
-      - uses: actions/upload-artifact@v4
+      - name: Publish GitHub Release with VSIX
+        uses: softprops/action-gh-release@v2
         with:
-          name: gatling-cursor-pack-vsix
-          path: vscode-gatling-cursor-pack/*.vsix
-          if-no-files-found: error
+          files: vscode-gatling-cursor-pack/*.vsix
+          generate_release_notes: true
