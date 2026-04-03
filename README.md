@@ -4,7 +4,7 @@
 
 **Cursor** pack for Gatling Enterprise: **Agent Skills** (`.cursor/skills/`) and the **MCP server** (`@gatling.io/gatling-mcp-server`). MCP server source lives in [`mcp-servers/gatling`](mcp-servers/gatling).
 
-This repository is a **fork** of Gatling’s official **[gatling-ai-extensions](https://github.com/gatling/gatling-ai-extensions)** project, which targets **Claude Code** (marketplace plugin, skills, and MCP). Here the same capabilities are adapted for **Cursor** (Agent Skills, rules, VSIX pack) while retaining the upstream MCP server sources and reference skills.
+**Maintained in this GitHub repo:** [gozen59/perf-tool-gatling-ai-ext](https://github.com/gozen59/perf-tool-gatling-ai-ext). It is a **fork** of Gatling’s official **[gatling/gatling-ai-extensions](https://github.com/gatling/gatling-ai-extensions)** (Claude Code marketplace, skills, MCP). The same ideas are adapted here for **Cursor** (Agent Skills, rules, VSIX pack), while keeping upstream MCP sources and reference skills.
 
 > Skill definitions aligned with the official repo are kept under [`reference/gatling-skills`](reference/gatling-skills) for syncing and regenerating Cursor `SKILL.md` files.
 
@@ -28,6 +28,8 @@ The extension in [`vscode-gatling-cursor-pack/`](vscode-gatling-cursor-pack/) pr
 If **`Extensions: Install from VSIX`** does not appear, update Cursor or see [Cursor forum — VSIX install](https://forum.cursor.com/t/how-to-install-vsix-format-extension/1667/).
 
 ### Where to get the `.vsix`
+
+**VSIX downloads (this repo, the Cursor fork):** [gozen59/perf-tool-gatling-ai-ext](https://github.com/gozen59/perf-tool-gatling-ai-ext) — [Releases](https://github.com/gozen59/perf-tool-gatling-ai-ext/releases) · [Actions](https://github.com/gozen59/perf-tool-gatling-ai-ext/actions) · rolling build [**rolling-vsix**](https://github.com/gozen59/perf-tool-gatling-ai-ext/releases/tag/rolling-vsix).
 
 | Source | What it is |
 |--------|------------|
@@ -90,4 +92,4 @@ A valid `GATLING_ENTERPRISE_API_TOKEN` with at least the **Configure** role.
 
 ## Help
 
-[Gatling documentation](https://docs.gatling.io) · [Community forum](https://community.gatling.io) · [Gatling product issues](https://github.com/gatling/gatling/issues)
+[Issues (this repo)](https://github.com/gozen59/perf-tool-gatling-ai-ext/issues) · [Gatling documentation](https://docs.gatling.io) · [Community forum](https://community.gatling.io) · [Gatling product issues](https://github.com/gatling/gatling/issues)

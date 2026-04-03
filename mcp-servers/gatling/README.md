@@ -19,4 +19,4 @@ Read the [documentation](https://docs.gatling.io).
 
 Join the [Gatling Community Forum](https://community.gatling.io).
 
-Found a real bug? Raise an [issue](https://github.com/gatling/gatling/issues).
+Issues for **this monorepo** (Cursor fork): [gozen59/perf-tool-gatling-ai-ext](https://github.com/gozen59/perf-tool-gatling-ai-ext/issues). Gatling **product** (upstream): [gatling/gatling](https://github.com/gatling/gatling/issues).

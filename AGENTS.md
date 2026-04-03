@@ -1,6 +1,8 @@
 # Gatling AI — agent context (Cursor)
 
-This repository provides **Gatling Enterprise** integration for the Cursor agent: skills + MCP server. It is a **Cursor-oriented fork** of [gatling/gatling-ai-extensions](https://github.com/gatling/gatling-ai-extensions); see the root [README](README.md) for scope, VSIX distribution (GitHub Actions artifact), and maintenance scripts.
+This repository provides **Gatling Enterprise** integration for the Cursor agent: skills + MCP server.
+
+**Code here:** [gozen59/perf-tool-gatling-ai-ext](https://github.com/gozen59/perf-tool-gatling-ai-ext) (**fork of** upstream [gatling/gatling-ai-extensions](https://github.com/gatling/gatling-ai-extensions)). See the root [README](README.md) for VSIX distribution and maintenance.
 
 This file is also copied into workspaces when using the **Gatling Cursor Pack** VSIX (**Install into workspace** command).
 

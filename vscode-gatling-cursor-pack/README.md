@@ -4,7 +4,7 @@ Installs Gatling **Agent Skills** (`.cursor/skills/`), the **rule** under `.curs
 
 ## For end users
 
-**No need to clone this repository.** Get the `.vsix` from the monorepo **Releases** page (after a maintainer pushes a `v*` tag — workflow `release-vsix.yml` under `.github/workflows/`) or from the **Actions** artifact `gatling-cursor-pack-vsix` (workflow `build-vsix.yml`).
+**No need to clone this repository.** Download the `.vsix` from **[Releases](https://github.com/gozen59/perf-tool-gatling-ai-ext/releases)** (tag `v*`, workflow `release-vsix.yml`) or from **[Actions](https://github.com/gozen59/perf-tool-gatling-ai-ext/actions)** → latest **Build VSIX** run → artifact **`gatling-cursor-pack-vsix`**. Rolling build: [rolling-vsix](https://github.com/gozen59/perf-tool-gatling-ai-ext/releases/tag/rolling-vsix).
 
 1. Install the `.vsix`:
    - **Cursor**: Command palette → **`Extensions: Install from VSIX...`**, or drag the `.vsix` onto the Extensions view, or `cursor --install-extension /path/to/file.vsix`. (The Extensions panel may only show the marketplace; the command palette method is the reliable one.)
@@ -44,4 +44,4 @@ If `pack/` was tracked before: `git rm -r --cached vscode-gatling-cursor-pack/pa
 
 ## Marketplace publisher
 
-Before publishing to the Marketplace, change `"publisher": "local"` in `package.json`, set `"repository"` to your Git URL if needed, and register a Microsoft publisher account.
+Before publishing to the Marketplace, change `"publisher": "local"` in `package.json` and register a Microsoft publisher account. The committed `repository.url` points at [gozen59/perf-tool-gatling-ai-ext](https://github.com/gozen59/perf-tool-gatling-ai-ext); GitHub Actions overwrites it with the repo that runs the workflow so a clone under another GitHub owner still packages the correct URL.

@@ -5,9 +5,10 @@
   "homepage": "https://gatling.io",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gatling/gatling-ai-extensions.git"
+    "url": "git+https://github.com/gozen59/perf-tool-gatling-ai-ext.git",
+    "directory": "mcp-servers/gatling"
   },
-  "bugs": "https://github.com/gatling/gatling/issues",
+  "bugs": "https://github.com/gozen59/perf-tool-gatling-ai-ext/issues",
   "keywords": [
     "gatling",
     "mcp",

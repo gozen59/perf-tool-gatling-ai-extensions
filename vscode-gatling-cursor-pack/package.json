@@ -6,7 +6,8 @@
   "publisher": "local",
   "repository": {
     "type": "git",
-    "url": "https://github.com/gatling/gatling-ai-extensions.git"
+    "url": "https://github.com/gozen59/perf-tool-gatling-ai-ext.git",
+    "directory": "vscode-gatling-cursor-pack"
   },
   "license": "Apache-2.0",
   "engines": {
