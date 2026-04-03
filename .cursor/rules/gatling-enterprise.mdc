@@ -1,0 +1,15 @@
+---
+description: Gatling Enterprise — gatling-* skills, gatling MCP, extension sources
+globs: "**/.gatling/**,**/.cursor/skills/gatling-*/**,**/mcp-servers/gatling/**,**/reference/gatling-skills/**"
+alwaysApply: false
+---
+
+# Gatling Enterprise (Cursor)
+
+When these paths are in scope:
+
+- Follow **Agent Skills** under `.cursor/skills/` whose names start with `gatling-`.
+- Use **MCP tools** on the server named `gatling` (when configured) for the Gatling Enterprise API.
+- Never print or commit `GATLING_ENTERPRISE_API_TOKEN`.
+
+For upstream → Cursor maintenance, see **Maintenance** in the root README.

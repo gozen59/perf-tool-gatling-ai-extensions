@@ -1,0 +1,56 @@
+{
+  "name": "@gatling.io/gatling-mcp-server",
+  "version": "0.1.14",
+  "license": "Apache-2.0",
+  "homepage": "https://gatling.io",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gatling/gatling-ai-extensions.git"
+  },
+  "bugs": "https://github.com/gatling/gatling/issues",
+  "keywords": [
+    "gatling",
+    "mcp",
+    "model context protocol",
+    "ai",
+    "llm",
+    "cursor",
+    "chatgpt",
+    "test",
+    "testing",
+    "loadtest",
+    "loadtesting",
+    "load test",
+    "load testing",
+    "performance test",
+    "performance testing"
+  ],
+  "type": "module",
+  "bin": {
+    "gatling-mcp-server": "target/index.js"
+  },
+  "files": [
+    "target"
+  ],
+  "main": "target/index.js",
+  "scripts": {
+    "clean": "rimraf /target",
+    "build": "tsc && chmod +x target/index.js",
+    "format": "prettier --write '**/*.ts'",
+    "format-check": "prettier --check '**/*.ts'",
+    "start": "npm run build && ./target/index.js"
+  },
+  "dependencies": {
+    "@actions/http-client": "4.0.0",
+    "@amplitude/analytics-node": "1.5.49",
+    "@modelcontextprotocol/sdk": "1.27.1",
+    "uuid": "13.0.0",
+    "zod": "4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "24.12.0",
+    "prettier": "3.8.1",
+    "rimraf": "6.1.3",
+    "typescript": "5.9.3"
+  }
+}

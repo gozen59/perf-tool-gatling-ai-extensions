@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "gatling": {
+      "command": "npx",
+      "args": ["-y", "@gatling.io/gatling-mcp-server"],
+      "env": {
+        "GATLING_ENTERPRISE_API_TOKEN": "REPLACE_WITH_YOUR_TOKEN"
+      }
+    }
+  }
+}

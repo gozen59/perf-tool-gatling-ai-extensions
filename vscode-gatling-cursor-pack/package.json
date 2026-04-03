@@ -1,0 +1,34 @@
+{
+  "name": "gatling-cursor-pack",
+  "displayName": "Gatling Cursor Pack",
+  "description": "Cursor skills and rules for Gatling Enterprise (copy into workspace + MCP docs).",
+  "version": "0.1.0",
+  "publisher": "local",
+  "license": "Apache-2.0",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": ["Other"],
+  "main": "./extension.js",
+  "activationEvents": ["onCommand:gatlingCursorPack.installToWorkspace"],
+  "contributes": {
+    "commands": [
+      {
+        "command": "gatlingCursorPack.installToWorkspace",
+        "title": "Gatling Cursor Pack: Install into workspace"
+      }
+    ]
+  },
+  "scripts": {
+    "package": "vsce package --no-dependencies --allow-missing-repository"
+  },
+  "devDependencies": {
+    "@vscode/vsce": "^3.3.2"
+  },
+  "files": [
+    "extension.js",
+    "LICENSE",
+    "README.md",
+    "pack/**"
+  ]
+}

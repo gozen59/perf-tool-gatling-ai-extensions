@@ -1,0 +1,8 @@
+.DS_Store
+node_modules/
+
+# VSIX / extension bundle — built in GitHub Actions; keep locally but do not commit
+vscode-gatling-cursor-pack/pack/
+vscode-gatling-cursor-pack/node_modules/
+vscode-gatling-cursor-pack/*.vsix
+*.vsix

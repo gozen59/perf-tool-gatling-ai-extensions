@@ -1,0 +1,43 @@
+name: Build VSIX (Gatling Cursor Pack)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, master]
+    paths:
+      - ".cursor/**"
+      - "vscode-gatling-cursor-pack/**"
+      - "mcp.json.example"
+      - "AGENTS.md"
+      - "scripts/bundle-vsix-pack.sh"
+      - ".github/workflows/build-vsix.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  vsix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: vscode-gatling-cursor-pack/package-lock.json
+
+      - name: Bundle pack from repo root
+        run: ./scripts/bundle-vsix-pack.sh
+
+      - name: Install dependencies and package VSIX
+        working-directory: vscode-gatling-cursor-pack
+        run: |
+          npm ci
+          npm run package
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: gatling-cursor-pack-vsix
+          path: vscode-gatling-cursor-pack/*.vsix
+          if-no-files-found: error
