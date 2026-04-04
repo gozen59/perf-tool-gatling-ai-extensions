@@ -47,6 +47,11 @@ jobs:
         run: |
           VERSION="${TAG#v}"
           echo "Version from tag $TAG => $VERSION (ephemeral on runner only)"
+          # vsce requires numeric semver; vO.1.3 (letter O) yields O.1.3 and fails — fail fast with a clear hint.
+          if ! [[ "$VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z.-]+)?$ ]]; then
+            echo "::error title=Invalid tag for VSIX::Version after 'v' must be semver with digits, e.g. v0.1.3. Got '$VERSION' from tag '$TAG'. Common mistake: letter O instead of digit 0 (vO.1.3)."
+            exit 1
+          fi
           jq --arg v "$VERSION" '.version = $v' package.json > package.json.tmp && mv package.json.tmp package.json
           jq --arg v "$VERSION" '.version = $v | .packages[""].version = $v' package-lock.json > package-lock.json.tmp && mv package-lock.json.tmp package-lock.json
 
