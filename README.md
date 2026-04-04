@@ -6,7 +6,7 @@
 
 **Maintained in this GitHub repo:** [gozen59/perf-tool-gatling-ai-ext](https://github.com/gozen59/perf-tool-gatling-ai-ext). It is a **fork** of Gatling’s official **[gatling/gatling-ai-extensions](https://github.com/gatling/gatling-ai-extensions)** (Claude Code marketplace, skills, MCP). The same ideas are adapted here for **Cursor** (Agent Skills, rules, VSIX pack), while keeping upstream MCP sources and reference skills.
 
-> Skill definitions aligned with the official repo are kept under [`reference/gatling-skills`](reference/gatling-skills) for syncing and regenerating Cursor `SKILL.md` files.
+> Skill bundles aligned with Gatling upstream live under [`reference/gatling-skills`](reference/gatling-skills) for sync and regeneration. **This fork** may add extra skills only under [`.cursor/skills/`](.cursor/skills) (for example **`gatling-blazemeter-artifact`** for BlazeMeter / Taurus); those are **not** pulled in by upstream sync scripts unless you copy a matching bundle into `reference/gatling-skills/` yourself.
 
 ## Sharing the pack (VSIX file)
 
@@ -59,7 +59,20 @@ See [`vscode-gatling-cursor-pack/README.md`](vscode-gatling-cursor-pack/README.m
    - Restart Cursor or reload MCP servers.
 3. **Prerequisite** — `GATLING_ENTERPRISE_API_TOKEN` with at least the **Configure** role on Gatling Enterprise.
 
-See [`AGENTS.md`](AGENTS.md) for the skill list and documentation links.
+See [`AGENTS.md`](AGENTS.md) for documentation links and MCP usage.
+
+### Agent skills
+
+Skills live under [`.cursor/skills/gatling-*`](.cursor/skills). The agent uses them for project bootstrap, Enterprise workflows, JMeter conversion, and related tasks.
+
+| Skill | Purpose |
+|--------|---------|
+| `gatling-blazemeter-artifact` | Build **`target/gatling-blazemeter.jar`** (Maven shade) for **Taurus** / **BlazeMeter Cloud** (`executor: gatling`, `blazemeter.yml`) — see [`.cursor/skills/gatling-blazemeter-artifact/SKILL.md`](.cursor/skills/gatling-blazemeter-artifact/SKILL.md) |
+| `gatling-bootstrap-project` | Create / bootstrap a Gatling project (language + build tool) |
+| `gatling-build-tools` | Deploy and run tests on Gatling Enterprise (build-tool plugins) |
+| `gatling-configuration-as-code` | Generate or update `.gatling/package.conf` |
+| `gatling-convert-from-jmeter` | Convert JMeter plans (`.jmx`) to Gatling |
+| `gatling-detect-existing-project` | Detect an existing Gatling project (language, build tool) |
 
 **Other repositories**: copy or symlink the `gatling-*` folders from `.cursor/skills/` into `~/.cursor/skills/` to enable them in another workspace.
 
@@ -67,8 +80,10 @@ See [`AGENTS.md`](AGENTS.md) for the skill list and documentation links.
 
 After updating skill bundles from [gatling/gatling-ai-extensions](https://github.com/gatling/gatling-ai-extensions) (copy into `reference/gatling-skills/`):
 
-1. `./scripts/sync-cursor-skills-from-upstream.sh` — syncs `references/`, `assets/`, `LICENSE` into `.cursor/skills/` without overwriting `SKILL.md`.
+1. `./scripts/sync-cursor-skills-from-upstream.sh` — syncs `references/`, `assets/`, `LICENSE` into `.cursor/skills/` for bundles that exist under `reference/gatling-skills/`, without overwriting `SKILL.md`.
 2. `./scripts/regenerate-cursor-skill-md.sh` — regenerates Cursor `SKILL.md` files; review `git diff` before committing.
+
+Skills that exist **only** under `.cursor/skills/` (e.g. **`gatling-blazemeter-artifact`**) are **not** touched by these scripts; maintain them directly in that folder (or add a parallel bundle under `reference/gatling-skills/` if you want them in the sync flow).
 
 The rule [`.cursor/rules/gatling-enterprise.mdc`](.cursor/rules/gatling-enterprise.mdc) applies when matching **globs** are in context (`.gatling`, skills, `mcp-servers`, `reference/gatling-skills`).
 

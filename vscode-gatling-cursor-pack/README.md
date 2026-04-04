@@ -1,6 +1,6 @@
 # Gatling Cursor Pack (VS Code / Cursor extension)
 
-Installs Gatling **Agent Skills** (`.cursor/skills/`), the **rule** under `.cursor/rules/`, plus `mcp.json.example` and `AGENTS.md` into an open workspace.
+Installs Gatling **Agent Skills** under `.cursor/skills/` (including **`gatling-blazemeter-artifact`** for BlazeMeter / Taurus fat JARs, plus bootstrap, Enterprise build tools, config-as-code, JMeter conversion, and project detection), the **rule** under `.cursor/rules/`, plus `mcp.json.example` and `AGENTS.md` into an open workspace.
 
 ## For end users
 

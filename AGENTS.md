@@ -16,12 +16,14 @@ This file is also copied into workspaces when using the **Gatling Cursor Pack** 
 
 | Skill | Purpose |
 |--------|---------|
+| `gatling-blazemeter-artifact` | Build **`target/gatling-blazemeter.jar`** (Maven shade) for **BlazeMeter** / **Taurus** Gatling executor — `blazemeter.yml`, `script: target/gatling-blazemeter.jar` |
 | `gatling-bootstrap-project` | Create / bootstrap a Gatling project (language + build tool) |
 | `gatling-build-tools` | Deploy and run tests on Gatling Enterprise (build-tool plugins) |
 | `gatling-configuration-as-code` | Generate or update `.gatling/package.conf` |
 | `gatling-convert-from-jmeter` | Convert JMeter plans (`.jmx`) to Gatling |
 | `gatling-detect-existing-project` | Detect an existing Gatling project (language, build tool) |
-| `gatling-blazemeter-artifact` | Build `target/gatling-blazemeter.jar` for BlazeMeter / Taurus (`blazemeter.yml`) |
+
+The **`gatling-blazemeter-artifact`** skill is **maintained in this fork** only (not in upstream `reference/gatling-skills`); see `.cursor/skills/gatling-blazemeter-artifact/SKILL.md`.
 
 For Gatling Enterprise API operations (teams, locations, packages, simulations), use **MCP tools** on the `gatling` server when it is enabled.
 

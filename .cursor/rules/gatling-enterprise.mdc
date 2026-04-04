@@ -8,7 +8,7 @@ alwaysApply: false
 
 When these paths are in scope:
 
-- Follow **Agent Skills** under `.cursor/skills/` whose names start with `gatling-`.
+- Follow **Agent Skills** under `.cursor/skills/` whose names start with `gatling-` (including **`gatling-blazemeter-artifact`** when the user works with **BlazeMeter**, **Taurus**, or **`gatling-blazemeter.jar`**).
 - Use **MCP tools** on the server named `gatling` (when configured) for the Gatling Enterprise API.
 - Never print or commit `GATLING_ENTERPRISE_API_TOKEN`.
 
