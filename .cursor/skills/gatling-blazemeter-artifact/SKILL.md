@@ -53,6 +53,16 @@ La classe de simulation doit apparaître sous forme `com/.../MaSimulation.class`
 - **`scenarios.*.script`** : `target/gatling-blazemeter.jar` (relatif au répertoire de travail de Taurus).
 - **`modules.gatling.version`** : même famille majeure que `gatling.version` du `pom.xml` ; pour Gatling **≥ 3.11**, la version doit être fixée explicitement dans le YAML (voir doc Taurus [Gatling executor](https://gettaurus.org/docs/Gatling/)).
 
+### BlazeMeter Cloud et Java 8 par défaut
+
+Si le build Maven échoue avec *« Required Java version 11 is not met by current version: 1.8… »*, ajouter dans le YAML (voir [Taurus Cloud](https://gettaurus.org/docs/Cloud.md) *Changing the Java version*) :
+
+```yaml
+modules:
+  version-switch:
+    switch-java: 17   # ou 11 / 21 selon les JDK disponibles dans l’image cloud
+```
+
 Secrets et surcharge JVM : `modules.gatling.java-opts` ou `scenarios.*.properties` (`-Dx-api-key=…`, etc.) — ne pas committer de secrets.
 
 ## Intégration CI / ZIP BlazeMeter
