@@ -33,7 +33,7 @@ If **`Extensions: Install from VSIX`** does not appear, update Cursor or see [Cu
 
 | Source | What it is |
 |--------|------------|
-| **Rolling “latest” VSIX** | Pre-release **`rolling-vsix`** (“Latest VSIX (rolling)”): updated when you **push a tag `v*`** (same workflow as below, same `.vsix` as that tag, file name `gatling-cursor-pack-<tag>.vsix`) *and* when [`.github/workflows/build-vsix.yml`](.github/workflows/build-vsix.yml) succeeds on **`main`/`master`** (then reflects the last **branch** build). Open **Releases** → that entry for a stable download without unzipping. |
+| **Rolling “latest” VSIX** | Pre-release **`rolling-vsix`**: updated when you **push a tag `v*`** (same `.vsix` as that tag, filename `gatling-cursor-pack-<tag>.vsix`) and when [`.github/workflows/build-vsix.yml`](.github/workflows/build-vsix.yml) runs on **`main`/`master`**. **Branch builds** use extension version **`0.0.0-pre-build`** in the VSIX (not the committed `0.1.x`), so rolling snapshots are not mistaken for a tagged release. **Tag builds** use the semver from the tag. Open **Releases** → that entry to download without using Artifacts. |
 | **Versioned GitHub Release** | Pushing a tag `v*` (e.g. `v0.1.1`) runs [`.github/workflows/release-vsix.yml`](.github/workflows/release-vsix.yml): creates the **Release for that tag** with **`gatling-cursor-pack-<tag>.vsix`** *and* refreshes **`rolling-vsix`** with the same file. |
 | **Workflow artifact** | On each run, **Actions** → open that run → **Summary** → **Artifacts** → **`gatling-cursor-pack-vsix`** (zip; unzip for the `.vsix`). Handy if you need the file for a **specific** run; retention is limited (e.g. 90 days). |
 

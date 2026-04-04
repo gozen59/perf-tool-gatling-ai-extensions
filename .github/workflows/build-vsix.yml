@@ -39,11 +39,22 @@ jobs:
             '.repository = {"type":"git","url":$u,"directory":"vscode-gatling-cursor-pack"}' \
             package.json > package.json.tmp && mv package.json.tmp package.json
 
-      - name: Install dependencies and package VSIX
+      - name: Install dependencies
+        working-directory: vscode-gatling-cursor-pack
+        run: npm ci
+
+      # Do not ship the committed semver on main/master snapshots (avoids endless "0.1.0" overwrites).
+      - name: Set pre-build extension version (ephemeral on runner)
         working-directory: vscode-gatling-cursor-pack
         run: |
-          npm ci
-          npm run package
+          PRE_VERSION="0.0.0-pre-build"
+          echo "Extension version for this workflow: $PRE_VERSION"
+          jq --arg v "$PRE_VERSION" '.version = $v' package.json > package.json.tmp && mv package.json.tmp package.json
+          jq --arg v "$PRE_VERSION" '.version = $v | .packages[""].version = $v' package-lock.json > package-lock.json.tmp && mv package-lock.json.tmp package-lock.json
+
+      - name: Package VSIX
+        working-directory: vscode-gatling-cursor-pack
+        run: npm run package
 
       - uses: actions/upload-artifact@v4
         with:
@@ -73,6 +84,8 @@ jobs:
           name: Latest VSIX build (main)
           body: |
             **Automated build** — commit [`${{ github.sha }}`](https://github.com/${{ github.repository }}/commit/${{ github.sha }}) on `${{ github.ref_name }}`.
+
+            Extension / VSIX version for this snapshot: **`0.0.0-pre-build`** (not the committed `package.json` version; avoids confusing rolling builds with a real release like `0.1.0`).
 
             Download the `.vsix` below. This pre-release is **replaced** on each successful workflow run (same tag).
 
