@@ -79,6 +79,24 @@ IF there are several instances of `CSVDataSet` referencing the same file name:
   ELSE:
   - Create a single feeder and use it in each scenario
 
+##### Maven `gatling:test`, `src/main/resources`, and `csv("…")` (Java)
+
+Gatling’s `csv("guest.csv")` resolves files through Gatling’s own resource lookup (classpath / layout). With **`mvn gatling:test`**, data files copied only to **`src/main/resources`** (→ `target/classes`) are **not always visible** to that resolution, which can yield an **empty feeder** and session attributes missing (e.g. login JSON with null fields).
+
+**Prefer one of:**
+
+1. **Gatling / Maven convention:** put feeder files under **`src/test/resources`** (still copy or duplicate from JMeter as needed), then `csv("file.csv", separator)` as usual.
+2. **Same artifact as the simulation:** load the file with **`SimulationClass.class.getResourceAsStream("/file.csv")`** (or without leading `/`), parse rows (semicolon/comma per JMeter), and use **`listFeeder(rows).circular()`** (or queue/random as needed). This matches **`mvn gatling:test`**, IDE runs, and a **shaded “fat” JAR** (e.g. BlazeMeter).
+3. **Optional:** expose a JVM property (e.g. `guestFeedMaxLines`) to cap rows during local runs; document that it must be passed on the **same JVM as Gatling** (see below).
+
+##### System properties when using `mvn gatling:test`
+
+The Gatling Maven plugin runs simulations in a **forked JVM**. Properties set only on the Maven process (e.g. bare `mvn -Dx-api-key=… gatling:test`) are **not** seen by the simulation unless configured otherwise. Pass them via the plugin, for example:
+
+`-Dgatling.jvmArgs=-Dx-api-key=SECRET -DnbVU=5`
+
+(Adjust quoting on Windows shells.)
+
 #### JMESPathExtractor
 
 The `jmesPath` Gatling check extracts Strings, meaning that non String values get serialized back into JSON.
