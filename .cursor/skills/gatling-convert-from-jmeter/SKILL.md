@@ -50,6 +50,25 @@ should be copied to the resources directory in the Gatling project.
 | `follow_redirects` = true  | default setting, do nothing |
 | `follow_redirects` = false | `disableFollowRedirect`     |
 
+#### HTTP base URL: slash between host and path
+
+JMeter uses `HTTPSampler.domain` for the **host only** and `HTTPSampler.path` for the rest, often **without** a leading `/` (e.g. `${Env_Version}/availabilities/...`).
+
+Gatling resolves relative request paths against `http.baseUrl(...)`. If `baseUrl` is `https://host` (no trailing `/`) and the path is `load/v4/...` (no leading `/`), URL resolution can be **wrong** (path segments merge incorrectly with the authority).
+
+**When converting, ensure exactly one `/` between the host and the first path segment:**
+
+1. **Preferred (matches JMeter path shape):** set  
+   `baseUrl("https://" + host + "/")`  
+   i.e. the authority part ends with a **single** `/`, and keep paths as in JMeter (`load/v4/book-dine/...` without a leading `/`).  
+   If User Defined Variables mirror JMeter (e.g. `BookDine_URL`), treat the value as **host only**; normalize in code: trim, strip accidental `http://`/`https://`, strip trailing `/`, then append one `/` when building `baseUrl`.
+
+2. **Alternative:** `baseUrl("https://host")` **without** trailing slash and **prefix every relative path with `/`** (e.g. `"/" + envVersion + "/availabilities/..."`).
+
+3. **Avoid:** `baseUrl("https://host")` combined with paths like `load/v4/...` (no leading `/`).
+
+Absolute request URLs (full `https://...` per request) are unchanged. Apply the same rule for each logical “base host” used with relative paths.
+
 #### CSVDataSet
 
 `CSVDataSet` converts to a csv feeder.
